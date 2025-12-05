@@ -1,6 +1,9 @@
 # CrewAI Configuration for Morocco Delivery Multi-Agent System
 # This file defines agents, tools, and tasks for the CrewAI platform.
 # Once pushed to GitHub and connected to CrewAI, the platform will detect this structure.
+#
+# NOTE: For local development, use crew.py which instantiates agents programmatically.
+# This YAML is for CrewAI platform auto-detection when connecting via GitHub.
 
 # ============================================================================
 # AGENTS - LLM-based AI controllers
@@ -13,7 +16,7 @@ agents:
       You are the master coordinator for a Morocco-wide delivery network.
       You decide whether deliveries are intra-city or require CTM inter-city transport,
       and you delegate tasks to specialized agents.
-    class: agents.coordinator_agent.GlobalCoordinatorAgent
+    # class: agents.coordinator_agent.GlobalCoordinatorAgent  # Not needed for CrewAI platform
     tools:
       - routing_tools.compute_city_routes
       - courier_tools.get_available_couriers
@@ -28,7 +31,7 @@ agents:
     backstory: >
       You are responsible for all delivery operations within a specific city.
       You coordinate couriers, handle CTM handoffs, and ensure smooth last-mile delivery.
-    class: agents.city_ops_agent.CityOpsAgent
+    # class: agents.city_ops_agent.CityOpsAgent
     tools:
       - courier_tools.get_available_couriers
       - courier_tools.assign_tasks_to_courier
@@ -43,7 +46,7 @@ agents:
     backstory: >
       You are an expert in vehicle routing problems (VRP) and logistics optimization.
       You use advanced algorithms to create the most efficient routes for couriers.
-    class: agents.routing_agent.RoutingOptimizationAgent
+    # class: agents.routing_agent.RoutingOptimizationAgent
     tools:
       - routing_tools.compute_city_routes
       - routing_tools.estimate_route_time
@@ -56,7 +59,7 @@ agents:
     backstory: >
       You coordinate with CTM and other carriers to move parcels between cities.
       You select optimal routes, estimate ETAs, and track parcels during transit.
-    class: agents.intercity_carrier_agent.IntercityCarrierAgent
+    # class: agents.intercity_carrier_agent.IntercityCarrierAgent
     tools:
       - ctm_tools.get_intercity_routes
       - ctm_tools.estimate_intercity_eta
@@ -71,7 +74,7 @@ agents:
     backstory: >
       You are a friendly customer support agent who helps customers track their parcels
       and answers questions about delivery status. You escalate issues when needed.
-    class: agents.tracking_support_agent.TrackingSupportAgent
+    # class: agents.tracking_support_agent.TrackingSupportAgent
     tools:
       - tracking_tools.get_parcel_status
       - tracking_tools.get_parcel_history
@@ -84,7 +87,7 @@ agents:
     backstory: >
       You analyze historical delivery data to find bottlenecks, inefficiencies,
       and opportunities for improvement. You provide actionable insights to management.
-    class: agents.analytics_agent.AnalyticsAgent
+    # class: agents.analytics_agent.AnalyticsAgent
     tools:
       - db_tools.DeliveryDB.query_deliveries
       - db_tools.DeliveryDB.get_performance_metrics

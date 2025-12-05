@@ -39,9 +39,10 @@ env/
 .DS_Store
 Thumbs.db
 
-# Environment variables
+# Environment variables (contains API keys - DO NOT COMMIT)
 .env
 .env.local
+.env.*.local
 
 # Logs
 *.log

@@ -1,0 +1,34 @@
+plan_delivery_task:
+  description: >
+    Plan the delivery for this order:
+    - Pickup City: {order[pickup_city]}
+    - Delivery City: {order[delivery_city]}
+    - Items: {order[items]}
+    - Priority: {order[priority]}
+    
+    Determine if this is intra-city or inter-city delivery.
+    If inter-city, coordinate CTM transport.
+    Assign couriers for pickup and last-mile delivery.
+  expected_output: >
+    Delivery plan with assigned couriers, routes, and estimated timeline
+
+optimize_routes_task:
+  description: >
+    Optimize delivery routes for {city}:
+    - Number of tasks: {num_tasks}
+    - Tasks: {tasks}
+    
+    Find available couriers and compute optimal routes to minimize time and distance.
+  expected_output: >
+    Optimized route assignments for each courier with estimated times
+
+intercity_transfer_task:
+  description: >
+    Coordinate CTM transport:
+    - Parcel ID: {parcel_id}
+    - Origin: {origin}
+    - Destination: {destination}
+    
+    Find best CTM route, book transport, and provide tracking updates.
+  expected_output: >
+    Transport booking confirmation with tracking information
