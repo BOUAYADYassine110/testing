@@ -6,7 +6,7 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.tools import tool
 
-from morocco_delivery_mas.tools import routing_tools, courier_tools, ctm_tools, tracking_tools
+from .tools import routing_tools, courier_tools, ctm_tools, tracking_tools
 
 @tool
 def compute_city_routes_tool(couriers: str, tasks: str) -> str:
@@ -143,7 +143,3 @@ class MoroccoDeliveryMasCrew:
             process=Process.sequential,
             verbose=True
         )
-
-
-# Instantiate crew for CrewAI platform
-morocco_delivery_crew = MoroccoDeliveryMasCrew().crew()
