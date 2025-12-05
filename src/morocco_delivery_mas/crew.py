@@ -150,7 +150,7 @@ class MoroccoDeliveryMasCrew:
         """Creates the Morocco Delivery MAS crew"""
         return Crew(
             agents=self.agents,
-            tasks=[self.plan_delivery_task()],  # Only run first task to avoid rate limits
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True
         )

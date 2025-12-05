@@ -1,1 +1,3 @@
-# Morocco Delivery Multi-Agent System
+from .crew import MoroccoDeliveryMasCrew
+
+__all__ = ['MoroccoDeliveryMasCrew']

@@ -20,3 +20,7 @@ run_crew = "morocco_delivery_mas.main:run"
 train = "morocco_delivery_mas.main:train"
 replay = "morocco_delivery_mas.main:replay"
 test = "morocco_delivery_mas.main:test"
+
+[tool.crewai]
+crew_module = "morocco_delivery_mas.crew"
+crew_class = "MoroccoDeliveryMasCrew"
