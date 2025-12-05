@@ -1,0 +1,96 @@
+project:
+  name: morocco-delivery-mas
+  version: 0.1.0
+  description: AI-powered multi-agent delivery system for Morocco
+
+crew:
+  name: Morocco Delivery Multi-Agent System
+  process: sequential
+  verbose: true
+  memory: true
+
+agents:
+  coordinator_agent:
+    role: Global Delivery Coordinator
+    goal: Analyze delivery orders and orchestrate the entire delivery process
+    backstory: |
+      You are the master coordinator for a Morocco-wide delivery network.
+      You decide whether deliveries are intra-city or require CTM inter-city transport,
+      and you delegate tasks to specialized agents.
+    tools:
+      - compute_city_routes_tool
+      - get_available_couriers_tool
+      - get_intercity_routes_tool
+
+  city_ops_agent:
+    role: City Operations Manager
+    goal: Manage local pickups, deliveries, and courier assignments within a city
+    backstory: |
+      You are responsible for all delivery operations within a specific city.
+      You coordinate couriers, handle CTM handoffs, and ensure smooth last-mile delivery.
+    tools:
+      - get_available_couriers_tool
+      - assign_tasks_to_courier_tool
+      - compute_city_routes_tool
+      - update_parcel_status_tool
+
+  routing_agent:
+    role: Route Optimization Specialist
+    goal: Optimize delivery routes to minimize time and distance
+    backstory: |
+      You are an expert in vehicle routing problems (VRP) and logistics optimization.
+      You use advanced algorithms to create the most efficient routes for couriers.
+    tools:
+      - compute_city_routes_tool
+      - estimate_route_time_tool
+
+  intercity_carrier_agent:
+    role: Inter-City Transport Coordinator
+    goal: Manage CTM transport between cities
+    backstory: |
+      You coordinate with CTM and other carriers to move parcels between cities.
+      You select optimal routes, estimate ETAs, and track parcels during transit.
+    tools:
+      - get_intercity_routes_tool
+      - estimate_intercity_eta_tool
+      - book_ctm_transport_tool
+      - update_parcel_status_tool
+
+  tracking_support_agent:
+    role: Customer Support & Tracking Agent
+    goal: Answer customer queries and provide parcel tracking information
+    backstory: |
+      You are a friendly customer support agent who helps customers track their parcels
+      and answers questions about delivery status. You escalate issues when needed.
+    tools:
+      - get_parcel_status_tool
+      - get_parcel_history_tool
+
+tasks:
+  plan_delivery_task:
+    description: |
+      Plan the delivery for the provided order.
+      Analyze the pickup and delivery cities to determine if this is intra-city or inter-city delivery.
+      If inter-city, coordinate CTM transport between cities.
+      Assign appropriate couriers for pickup and last-mile delivery.
+      Consider the order priority and items when planning.
+    expected_output: Delivery plan with assigned couriers, routes, and estimated timeline
+    agent: coordinator_agent
+
+  optimize_routes_task:
+    description: |
+      Optimize delivery routes for the given city and tasks.
+      Find available couriers in the area.
+      Compute optimal routes to minimize time and distance.
+      Consider vehicle types and courier availability.
+    expected_output: Optimized route assignments for each courier with estimated times
+    agent: routing_agent
+
+  intercity_transfer_task:
+    description: |
+      Coordinate CTM transport between cities.
+      Find the best CTM route for the parcel.
+      Book transport and provide tracking updates.
+      Ensure smooth handoff at origin and destination depots.
+    expected_output: Transport booking confirmation with tracking information
+    agent: intercity_carrier_agent
