@@ -1,0 +1,194 @@
+# CrewAI Configuration for Morocco Delivery Multi-Agent System
+# This file defines agents, tools, and tasks for the CrewAI platform.
+# Once pushed to GitHub and connected to CrewAI, the platform will detect this structure.
+
+# ============================================================================
+# AGENTS - LLM-based AI controllers
+# ============================================================================
+agents:
+  - name: coordinator
+    role: Global Delivery Coordinator
+    goal: Analyze delivery orders and orchestrate the entire delivery process
+    backstory: >
+      You are the master coordinator for a Morocco-wide delivery network.
+      You decide whether deliveries are intra-city or require CTM inter-city transport,
+      and you delegate tasks to specialized agents.
+    class: agents.coordinator_agent.GlobalCoordinatorAgent
+    tools:
+      - routing_tools.compute_city_routes
+      - courier_tools.get_available_couriers
+      - ctm_tools.get_intercity_routes
+      - db_tools.DeliveryDB.add_order
+    max_iterations: 10
+    allow_delegation: true
+
+  - name: city_ops
+    role: City Operations Manager
+    goal: Manage local pickups, deliveries, and courier assignments within a city
+    backstory: >
+      You are responsible for all delivery operations within a specific city.
+      You coordinate couriers, handle CTM handoffs, and ensure smooth last-mile delivery.
+    class: agents.city_ops_agent.CityOpsAgent
+    tools:
+      - courier_tools.get_available_couriers
+      - courier_tools.assign_tasks_to_courier
+      - routing_tools.compute_city_routes
+      - tracking_tools.update_parcel_status
+    max_iterations: 8
+    allow_delegation: false
+
+  - name: routing
+    role: Route Optimization Specialist
+    goal: Optimize delivery routes to minimize time and distance
+    backstory: >
+      You are an expert in vehicle routing problems (VRP) and logistics optimization.
+      You use advanced algorithms to create the most efficient routes for couriers.
+    class: agents.routing_agent.RoutingOptimizationAgent
+    tools:
+      - routing_tools.compute_city_routes
+      - routing_tools.estimate_route_time
+    max_iterations: 5
+    allow_delegation: false
+
+  - name: intercity_carrier
+    role: Inter-City Transport Coordinator
+    goal: Manage CTM transport between cities
+    backstory: >
+      You coordinate with CTM and other carriers to move parcels between cities.
+      You select optimal routes, estimate ETAs, and track parcels during transit.
+    class: agents.intercity_carrier_agent.IntercityCarrierAgent
+    tools:
+      - ctm_tools.get_intercity_routes
+      - ctm_tools.estimate_intercity_eta
+      - ctm_tools.book_ctm_transport
+      - tracking_tools.update_parcel_status
+    max_iterations: 6
+    allow_delegation: false
+
+  - name: tracking_support
+    role: Customer Support & Tracking Agent
+    goal: Answer customer queries and provide parcel tracking information
+    backstory: >
+      You are a friendly customer support agent who helps customers track their parcels
+      and answers questions about delivery status. You escalate issues when needed.
+    class: agents.tracking_support_agent.TrackingSupportAgent
+    tools:
+      - tracking_tools.get_parcel_status
+      - tracking_tools.get_parcel_history
+    max_iterations: 5
+    allow_delegation: true
+
+  - name: analytics
+    role: Analytics & Insights Specialist
+    goal: Analyze delivery performance and identify optimization opportunities
+    backstory: >
+      You analyze historical delivery data to find bottlenecks, inefficiencies,
+      and opportunities for improvement. You provide actionable insights to management.
+    class: agents.analytics_agent.AnalyticsAgent
+    tools:
+      - db_tools.DeliveryDB.query_deliveries
+      - db_tools.DeliveryDB.get_performance_metrics
+    max_iterations: 7
+    allow_delegation: false
+
+# ============================================================================
+# TOOLS - Python functions exposed to agents
+# ============================================================================
+tools:
+  # Routing Tools
+  - name: compute_city_routes
+    description: Compute optimal routes for couriers given tasks (VRP solver)
+    function: tools.routing_tools.compute_city_routes
+    
+  - name: estimate_route_time
+    description: Estimate time to complete a route with given waypoints
+    function: tools.routing_tools.estimate_route_time
+
+  # Courier Tools
+  - name: get_available_couriers
+    description: Get list of available couriers in a city
+    function: tools.courier_tools.get_available_couriers
+    
+  - name: assign_tasks_to_courier
+    description: Assign delivery tasks to a specific courier
+    function: tools.courier_tools.assign_tasks_to_courier
+    
+  - name: get_courier_status
+    description: Get current status and location of a courier
+    function: tools.courier_tools.get_courier_status
+
+  # CTM Tools
+  - name: get_intercity_routes
+    description: Get available CTM routes between two cities
+    function: tools.ctm_tools.get_intercity_routes
+    
+  - name: estimate_intercity_eta
+    description: Estimate arrival time for inter-city transport
+    function: tools.ctm_tools.estimate_intercity_eta
+    
+  - name: book_ctm_transport
+    description: Book CTM transport for a parcel
+    function: tools.ctm_tools.book_ctm_transport
+
+  # Tracking Tools
+  - name: update_parcel_status
+    description: Update the status of a parcel
+    function: tools.tracking_tools.update_parcel_status
+    
+  - name: get_parcel_status
+    description: Get current status of a parcel
+    function: tools.tracking_tools.get_parcel_status
+    
+  - name: get_parcel_history
+    description: Get full tracking history for a parcel
+    function: tools.tracking_tools.get_parcel_history
+
+  # Database Tools
+  - name: db_add_order
+    description: Add a new delivery order to database
+    function: tools.db_tools.DeliveryDB.add_order
+    
+  - name: db_query_deliveries
+    description: Query deliveries with filters
+    function: tools.db_tools.DeliveryDB.query_deliveries
+    
+  - name: db_get_performance_metrics
+    description: Calculate performance metrics for a time period
+    function: tools.db_tools.DeliveryDB.get_performance_metrics
+
+# ============================================================================
+# TASKS - High-level workflows
+# ============================================================================
+tasks:
+  - name: plan_delivery
+    description: Plan a new delivery order from intake to execution
+    function: tasks.plan_delivery_task.plan_delivery
+    agent: coordinator
+    expected_output: Delivery plan with steps and delegated agents
+    
+  - name: optimize_routes
+    description: Optimize courier routes for a city
+    function: tasks.optimize_routes_task.optimize_routes
+    agent: routing
+    expected_output: Optimized route assignments for couriers
+    
+  - name: intercity_transfer
+    description: Execute inter-city transfer via CTM
+    function: tasks.intercity_transfer_task.intercity_transfer
+    agent: intercity_carrier
+    expected_output: Transport confirmation and tracking info
+
+# ============================================================================
+# CREW CONFIGURATION
+# ============================================================================
+crew:
+  name: Morocco Delivery Multi-Agent System
+  process: sequential  # or hierarchical
+  verbose: true
+  memory: true  # Enable memory for agents to remember context
+  
+  # Default LLM configuration (can be overridden per agent)
+  llm:
+    model: gpt-4  # or gpt-3.5-turbo, claude-3, etc.
+    temperature: 0.7
+    max_tokens: 2000
