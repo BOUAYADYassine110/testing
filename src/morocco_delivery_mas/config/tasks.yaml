@@ -11,6 +11,7 @@ plan_delivery_task:
     Assign couriers for pickup and last-mile delivery.
   expected_output: >
     Delivery plan with assigned couriers, routes, and estimated timeline
+  agent: coordinator_agent
 
 optimize_routes_task:
   description: >
@@ -21,6 +22,7 @@ optimize_routes_task:
     Find available couriers and compute optimal routes to minimize time and distance.
   expected_output: >
     Optimized route assignments for each courier with estimated times
+  agent: routing_agent
 
 intercity_transfer_task:
   description: >
@@ -32,3 +34,4 @@ intercity_transfer_task:
     Find best CTM route, book transport, and provide tracking updates.
   expected_output: >
     Transport booking confirmation with tracking information
+  agent: intercity_carrier_agent

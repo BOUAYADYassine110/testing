@@ -1,16 +1,8 @@
 #!/usr/bin/env python
-"""
-Main entry point for Morocco Delivery MAS
-"""
-
 import sys
-from crew import MoroccoDeliveryMasCrew
-
+from morocco_delivery_mas.crew import MoroccoDeliveryMasCrew
 
 def run():
-    """
-    Run the crew.
-    """
     inputs = {
         'order': {
             'pickup_city': 'Casablanca',
@@ -19,9 +11,24 @@ def run():
             'priority': 'express'
         }
     }
-    
     MoroccoDeliveryMasCrew().crew().kickoff(inputs=inputs)
 
+def train():
+    inputs = {'order': {'pickup_city': 'Casablanca', 'delivery_city': 'Rabat'}}
+    try:
+        MoroccoDeliveryMasCrew().crew().train(n_iterations=int(sys.argv[1]), inputs=inputs)
+    except Exception as e:
+        raise Exception(f"Training failed: {e}")
 
-if __name__ == "__main__":
-    run()
+def replay():
+    try:
+        MoroccoDeliveryMasCrew().crew().replay(task_id=sys.argv[1])
+    except Exception as e:
+        raise Exception(f"Replay failed: {e}")
+
+def test():
+    inputs = {'order': {'pickup_city': 'Casablanca', 'delivery_city': 'Rabat'}}
+    try:
+        MoroccoDeliveryMasCrew().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
+    except Exception as e:
+        raise Exception(f"Test failed: {e}")
