@@ -152,5 +152,6 @@ class MoroccoDeliveryMasCrew:
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
-            verbose=True
+            verbose=True,
+            trace=True
         )
