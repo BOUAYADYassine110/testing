@@ -6,7 +6,6 @@ Future: Integrate with real CTM API or carrier management system.
 """
 
 from typing import List, Dict, Any
-from crewai_tools import tool
 
 
 # Placeholder CTM route database
@@ -18,7 +17,6 @@ _CTM_ROUTES = {
 }
 
 
-@tool("get_intercity_routes")
 def get_intercity_routes(origin_city: str, destination_city: str) -> List[Dict[str, Any]]:
     """
     Get available CTM routes between two cities.
@@ -57,7 +55,6 @@ def get_intercity_routes(origin_city: str, destination_city: str) -> List[Dict[s
     return []
 
 
-@tool("estimate_intercity_eta")
 def estimate_intercity_eta(origin_city: str, destination_city: str, departure_time: str = None) -> Dict[str, Any]:
     """
     Estimate arrival time for inter-city transport.
@@ -89,7 +86,6 @@ def estimate_intercity_eta(origin_city: str, destination_city: str, departure_ti
     }
 
 
-@tool("book_ctm_transport")
 def book_ctm_transport(parcel_id: str, origin_city: str, destination_city: str, 
                        parcel_details: Dict[str, Any]) -> Dict[str, Any]:
     """

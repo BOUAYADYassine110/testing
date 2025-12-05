@@ -6,14 +6,12 @@ These functions are intended to be exposed as tools to LLM-based agents in CrewA
 
 from typing import List, Dict, Any
 from datetime import datetime
-from crewai_tools import tool
 
 
 # In-memory tracking database (placeholder)
 _TRACKING_DB = {}
 
 
-@tool("update_parcel_status")
 def update_parcel_status(parcel_id: str, status: str, location: str, notes: str = "") -> Dict[str, Any]:
     """
     Update the status of a parcel.
@@ -52,7 +50,6 @@ def update_parcel_status(parcel_id: str, status: str, location: str, notes: str 
     }
 
 
-@tool("get_parcel_status")
 def get_parcel_status(parcel_id: str) -> Dict[str, Any]:
     """
     Get current status of a parcel.
@@ -85,7 +82,6 @@ def get_parcel_status(parcel_id: str) -> Dict[str, Any]:
     }
 
 
-@tool("get_parcel_history")
 def get_parcel_history(parcel_id: str) -> List[Dict[str, Any]]:
     """
     Get full tracking history for a parcel.

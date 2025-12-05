@@ -5,7 +5,6 @@ These functions are intended to be exposed as tools to LLM-based agents in CrewA
 """
 
 from typing import List, Dict, Any
-from crewai_tools import tool
 
 
 # In-memory courier database (placeholder)
@@ -23,7 +22,6 @@ _COURIERS_DB = {
 }
 
 
-@tool("get_available_couriers")
 def get_available_couriers(city: str) -> List[Dict[str, Any]]:
     """
     Get list of available couriers in a specific city.
@@ -43,7 +41,6 @@ def get_available_couriers(city: str) -> List[Dict[str, Any]]:
     return available
 
 
-@tool("assign_tasks_to_courier")
 def assign_tasks_to_courier(courier_id: str, task_ids: List[str]) -> Dict[str, Any]:
     """
     Assign delivery tasks to a specific courier.
@@ -69,7 +66,6 @@ def assign_tasks_to_courier(courier_id: str, task_ids: List[str]) -> Dict[str, A
     }
 
 
-@tool("get_courier_status")
 def get_courier_status(courier_id: str) -> Dict[str, Any]:
     """
     Get current status and location of a courier.

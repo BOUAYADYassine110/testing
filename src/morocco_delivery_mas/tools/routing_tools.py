@@ -6,10 +6,8 @@ Future: Integrate OR-Tools, Google Maps API, or custom VRP solver.
 """
 
 from typing import List, Dict, Any
-from crewai_tools import tool
 
 
-@tool("compute_city_routes")
 def compute_city_routes(couriers: List[Dict[str, Any]], tasks: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Compute optimal routes for couriers given a set of delivery tasks.
@@ -47,7 +45,6 @@ def compute_city_routes(couriers: List[Dict[str, Any]], tasks: List[Dict[str, An
     }
 
 
-@tool("estimate_route_time")
 def estimate_route_time(route_points: List[Dict[str, float]], vehicle_type: str = "moto") -> float:
     """
     Estimate time to complete a route given waypoints.
