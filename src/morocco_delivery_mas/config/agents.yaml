@@ -7,6 +7,7 @@ coordinator_agent:
     You are the master coordinator for a Morocco-wide delivery network.
     You decide whether deliveries are intra-city or require CTM inter-city transport,
     and you delegate tasks to specialized agents.
+  llm: groq/llama-3.3-70b-versatile
 
 city_ops_agent:
   role: >
@@ -16,6 +17,7 @@ city_ops_agent:
   backstory: >
     You are responsible for all delivery operations within a specific city.
     You coordinate couriers, handle CTM handoffs, and ensure smooth last-mile delivery.
+  llm: groq/llama-3.3-70b-versatile
 
 routing_agent:
   role: >
@@ -25,6 +27,7 @@ routing_agent:
   backstory: >
     You are an expert in vehicle routing problems (VRP) and logistics optimization.
     You use advanced algorithms to create the most efficient routes for couriers.
+  llm: groq/llama-3.3-70b-versatile
 
 intercity_carrier_agent:
   role: >
@@ -34,6 +37,7 @@ intercity_carrier_agent:
   backstory: >
     You coordinate with CTM and other carriers to move parcels between cities.
     You select optimal routes, estimate ETAs, and track parcels during transit.
+  llm: groq/llama-3.3-70b-versatile
 
 tracking_support_agent:
   role: >
@@ -43,3 +47,4 @@ tracking_support_agent:
   backstory: >
     You are a friendly customer support agent who helps customers track their parcels
     and answers questions about delivery status. You escalate issues when needed.
+  llm: groq/llama-3.3-70b-versatile
