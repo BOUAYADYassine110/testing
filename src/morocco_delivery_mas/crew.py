@@ -143,3 +143,7 @@ class MoroccoDeliveryMasCrew:
             process=Process.sequential,
             verbose=True
         )
+
+
+# Instantiate crew for CrewAI platform
+morocco_delivery_crew = MoroccoDeliveryMasCrew().crew()
